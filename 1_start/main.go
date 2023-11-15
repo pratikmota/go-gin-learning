@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,12 +21,22 @@ func main() {
 	// GET: 127.0.0.1:8080/hello
 	r.GET("/hello", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": "pong语言",
 		})
 	})
 
-	//#2
+	//#2 using function
 	r.GET("/hello2", hello2)
 
-	r.Run() // listen and serve on 0.0.0.0:8080
+	//#3 Using AsciiJSON to Generates ASCII-only JSON with escaped non-ASCII characters.
+	r.GET("/AsciiJSON", func(c *gin.Context) {
+		data := map[string]interface{}{
+			"lang": "GO语言",
+			"tag":  "<br>",
+		}
+		c.AsciiJSON(http.StatusOK, data)
+	})
+
+	//https://sourjp.github.io/posts/go-gin/
+	r.Run(":8080") // listen and serve on 0.0.0.0:8080
 }
